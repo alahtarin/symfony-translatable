@@ -1,0 +1,31 @@
+.tabs.language-tabs-switch {
+    margin-bottom: 5px !important;
+}
+
+.language-tabs-switch a {
+    font-size: 0.8rem !important;
+    padding: 1px 8px !important;
+    color: #000 !important;
+}
+
+.language-tabs-switch dd.active a {
+    background: #43ac6a !important;
+    color: #fff !important;
+}
+
+.language-tabs-switch dd.active a:hover {
+    background: #43ac6a !important;
+}
+
+.language-tabs-switch dd:not(.active) a:hover {
+    background: #008cba !important;
+    color: #fff !important;
+}
+
+.language-tabs-content {
+    margin-bottom: 0 !important;
+}
+
+.language-tabs-content .content {
+    padding: 0 0 5px 0 !important;
+}

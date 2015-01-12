@@ -1,0 +1,30 @@
+{
+    "name" : "alahtarin/symfony-translatable",
+    "description" : "Symfony Translatable Bundle",
+    "type" : "symfony-bundle",
+    "authors" : [{
+        "name" : "alahtarin",
+        "email" : "alex.lahtarin@gmail.com"
+    }],
+    "keywords" : [
+        "translatable bundle"
+    ],
+    "license" : [
+        "MIT"
+    ],
+    "require" : {
+    },
+    "autoload" : {
+        "psr-0" : {
+            "Alahtarin\\TranslatableBundle" : ""
+        }
+    },
+    "target-dir" : "Alahtarin/TranslatableBundle",
+    "repositories" : [{
+    }],
+    "extra" : {
+        "branch-alias" : {
+            "dev-master" : "master"
+        }
+    }
+}

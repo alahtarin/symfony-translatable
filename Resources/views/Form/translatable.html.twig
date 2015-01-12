@@ -1,0 +1,26 @@
+{% block translatable_widget %}
+    <dl class="tabs language-tabs-switch" data-tab>
+        {% for locale in locales %}
+            {% if loop.first %}
+                {% set attrs = "class=active" %}
+            {% else %}
+                {% set attrs = "" %}
+            {% endif %}
+
+            <dd {{ attrs }}><a href="#name_{{ locale }}">{{ locale }}</a></dd>
+        {% endfor %}
+    </dl>
+    <div class="tabs-content language-tabs-content">
+        {% for locale in locales %}
+            {% if loop.first %}
+                {% set class = "active" %}
+            {% else %}
+                {% set class = "" %}
+            {% endif %}
+
+            <div class="content {{ class }}" id="name_{{ locale }}">
+                {{ form_row(attribute(form, "name_#{locale}")) }}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
