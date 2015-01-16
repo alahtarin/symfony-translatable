@@ -1,4 +1,13 @@
-.tabs.language-tabs-switch {
+.translatable-vertical-header label {
+    vertical-align: top;
+}
+
+.translatable-vertical.tabs.language-tabs-switch {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.translatable-inline.tabs.language-tabs-switch {
     margin-bottom: 5px !important;
 }
 

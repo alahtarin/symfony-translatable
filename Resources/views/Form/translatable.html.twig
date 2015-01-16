@@ -1,15 +1,18 @@
-{% block translatable_widget %}
-    <dl class="tabs language-tabs-switch" data-tab>
-        {% for locale in locales %}
-            {% if loop.first %}
-                {% set attrs = "class=active" %}
-            {% else %}
-                {% set attrs = "" %}
-            {% endif %}
+{% block translatable_row %}
+    <div class="translatable-vertical-header">
+        {{ form_label(form) }}
+        <dl class="tabs language-tabs-switch translatable-vertical" data-tab>
+            {% for locale in locales %}
+                {% if loop.first %}
+                    {% set attrs = "class=active" %}
+                {% else %}
+                    {% set attrs = "" %}
+                {% endif %}
 
-            <dd {{ attrs }}><a href="#name_{{ locale }}">{{ locale }}</a></dd>
-        {% endfor %}
-    </dl>
+                <dd {{ attrs }}><a href="#name_{{ locale }}">{{ locale }}</a></dd>
+            {% endfor %}
+        </dl>
+    </div>
     <div class="tabs-content language-tabs-content">
         {% for locale in locales %}
             {% if loop.first %}
