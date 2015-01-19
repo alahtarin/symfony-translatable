@@ -11,6 +11,14 @@
     margin-bottom: 5px !important;
 }
 
+.translatable-label {
+    vertical-align: top;
+}
+
+.language-tabs-switch {
+    width: 100%;
+}
+
 .language-tabs-switch a {
     font-size: 0.8rem !important;
     padding: 1px 8px !important;
@@ -26,8 +34,13 @@
     background: #43ac6a !important;
 }
 
-.language-tabs-switch dd:not(.active) a:hover {
+.language-tabs-switch dd:not(.active):not(.translatable-delete) a:hover {
     background: #008cba !important;
+    color: #fff !important;
+}
+
+.language-tabs-switch dd.translatable-delete a:hover {
+    background: #e35b5a !important;
     color: #fff !important;
 }
 

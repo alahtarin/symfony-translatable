@@ -53,7 +53,8 @@ class TranslatableRowType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars = array_merge($view->vars, [
-            'locales' => $options['locales']
+            'locales' => $options['locales'],
+            'use_delete' => $options['use_delete']
         ]);
     }
 
@@ -64,7 +65,8 @@ class TranslatableRowType extends AbstractType
     {
         $resolver->setDefaults(array(
             'mapped' => false,
-            'locales' => $this->defaultLocales
+            'locales' => $this->defaultLocales,
+            'use_delete' => false
         ));
     }
 

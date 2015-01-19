@@ -1,33 +1,41 @@
 {% block translatable_row %}
     <div class="row">
         <div class="columns">
-            <div class="translatable-vertical-header">
-                {{ form_label(form) }}
-                <dl class="tabs language-tabs-switch translatable-vertical" data-tab>
-                    {% for locale in locales %}
-                        {% if loop.first %}
-                            {% set attrs = "class=active" %}
-                        {% else %}
-                            {% set attrs = "" %}
-                        {% endif %}
-
-                        <dd {{ attrs }}><a href="#name_{{ locale }}">{{ locale }}</a></dd>
-                    {% endfor %}
-                </dl>
-            </div>
-            <div class="tabs-content language-tabs-content">
-                {% for locale in locales %}
-                    {% if loop.first %}
-                        {% set class = "active" %}
-                    {% else %}
-                        {% set class = "" %}
-                    {% endif %}
-
-                    <div class="content {{ class }}" id="name_{{ locale }}">
-                        {{ form_widget(attribute(form, "name_#{locale}")) }}
-                    </div>
-                {% endfor %}
-            </div>
+            {% set label_class = label_attr.class|default('') %}
+            {% set label_class = label_class ~ ' translatable-label' %}
+            {{ form_label(form, null, {label_attr: {class: label_class}}) }}
+            {{ form_widget(form) }}
         </div>
+    </div>
+{% endblock %}
+
+{% block translatable_widget %}
+    {% set sanitized_name = full_name|replace({'[' : '_', ']' : '_'}) %}
+    <dl class="tabs language-tabs-switch translatable-vertical" data-tab>
+        {% for locale in locales %}
+            {% if loop.first %}
+                {% set attrs = "class=active" %}
+            {% else %}
+                {% set attrs = "" %}
+            {% endif %}
+
+            <dd {{ attrs }}><a href="#{{ sanitized_name }}_{{ locale }}">{{ locale }}</a></dd>
+        {% endfor %}
+        {% if use_delete %}
+            <dd class="right translatable-delete"><a href="#"><i class="fa fa-trash-o"></i></a></dd>
+        {% endif %}
+    </dl>
+    <div class="tabs-content language-tabs-content">
+        {% for locale in locales %}
+            {% if loop.first %}
+                {% set class = "active" %}
+            {% else %}
+                {% set class = "" %}
+            {% endif %}
+
+            <div class="content {{ class }}" id="{{ sanitized_name }}_{{ locale }}">
+                {{ form_widget(attribute(form, "#{name}_#{locale}")) }}
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
