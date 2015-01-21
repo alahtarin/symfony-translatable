@@ -54,6 +54,7 @@ class TranslatableRowType extends AbstractType
     {
         $view->vars = array_merge($view->vars, [
             'locales' => $options['locales'],
+            'switch_class' => $options['switch_class'],
             'use_delete' => $options['use_delete']
         ]);
     }
@@ -66,7 +67,8 @@ class TranslatableRowType extends AbstractType
         $resolver->setDefaults(array(
             'mapped' => false,
             'locales' => $this->defaultLocales,
-            'use_delete' => false
+            'use_delete' => false,
+            'switch_class' => ''
         ));
     }
 

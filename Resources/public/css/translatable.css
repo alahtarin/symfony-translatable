@@ -15,11 +15,11 @@
     vertical-align: top;
 }
 
-.language-tabs-switch {
+.language-tabs-switch.full-width {
     width: 100%;
 }
 
-.language-tabs-switch a {
+.language-tabs-switch a, .language-tabs-switch div {
     font-size: 0.8rem !important;
     padding: 1px 8px !important;
     color: #000 !important;
@@ -39,7 +39,8 @@
     color: #fff !important;
 }
 
-.language-tabs-switch dd.translatable-delete a:hover {
+.language-tabs-switch dd.translatable-delete div:hover {
+    cursor: pointer;
     background: #e35b5a !important;
     color: #fff !important;
 }

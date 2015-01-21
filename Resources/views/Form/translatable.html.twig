@@ -11,7 +11,7 @@
 
 {% block translatable_widget %}
     {% set sanitized_name = full_name|replace({'[' : '_', ']' : '_'}) %}
-    <dl class="tabs language-tabs-switch translatable-vertical" data-tab>
+    <dl class="tabs language-tabs-switch translatable-vertical {{ switch_class }}" data-tab>
         {% for locale in locales %}
             {% if loop.first %}
                 {% set attrs = "class=active" %}
@@ -22,7 +22,7 @@
             <dd {{ attrs }}><a href="#{{ sanitized_name }}_{{ locale }}">{{ locale }}</a></dd>
         {% endfor %}
         {% if use_delete %}
-            <dd class="right translatable-delete"><a href="#"><i class="fa fa-trash-o"></i></a></dd>
+            <dd class="right translatable-delete"><div href="#"><i class="fa fa-trash-o"></i></div></dd>
         {% endif %}
     </dl>
     <div class="tabs-content language-tabs-content">
