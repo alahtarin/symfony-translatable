@@ -39,7 +39,10 @@ class TranslatableRowType extends AbstractType
         }
 
         foreach ($options['locales'] as $locale) {
-            $builder->add($builder->getName() . '_' . $locale, 'text', ['mapped' => false, 'label' => false]);
+            $builder->add($builder->getName().'_'.$locale, $options['field_type'], [
+                'mapped' => false,
+                'label' => false
+            ]);
         }
     }
 
@@ -55,7 +58,8 @@ class TranslatableRowType extends AbstractType
         $view->vars = array_merge($view->vars, [
             'locales' => $options['locales'],
             'switch_class' => $options['switch_class'],
-            'use_delete' => $options['use_delete']
+            'use_delete' => $options['use_delete'],
+            'field_type' => $options['field_type']
         ]);
     }
 
@@ -68,7 +72,9 @@ class TranslatableRowType extends AbstractType
             'mapped' => false,
             'locales' => $this->defaultLocales,
             'use_delete' => false,
-            'switch_class' => ''
+            'switch_class' => '',
+            'field_type' => 'text'
+
         ));
     }
 
