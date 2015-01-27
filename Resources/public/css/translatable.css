@@ -7,6 +7,10 @@
     vertical-align: top;
 }
 
+.translatable-vertical.tabs.language-tabs-switch:not(.full-width) {
+    margin-left: 15px;
+}
+
 .translatable-inline.tabs.language-tabs-switch {
     margin-bottom: 5px !important;
 }
