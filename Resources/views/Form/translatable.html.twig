@@ -13,29 +13,42 @@
     {% set sanitized_name = full_name|replace({'[' : '_', ']' : '_'}) %}
     <dl class="tabs language-tabs-switch translatable-vertical {{ switch_class }}" data-tab>
         {% for locale in locales %}
-            {% if loop.first %}
-                {% set attrs = "class=active" %}
-            {% else %}
-                {% set attrs = "" %}
-            {% endif %}
-
-            <dd {{ attrs }}><a href="#{{ sanitized_name }}_{{ locale }}">{{ locale }}</a></dd>
+            <dd class = "tabs-button {{ loop.first ? 'active':'' }}"><a href="#{{ sanitized_name }}_{{ locale }}">{{ locale }}</a></dd>
         {% endfor %}
         {% if use_delete %}
             <dd class="right translatable-delete"><div href="#"><i class="fa fa-trash-o"></i></div></dd>
         {% endif %}
     </dl>
-    <div class="tabs-content language-tabs-content">
+    <div class="tabs-content language-tabs-content" id="{{ id ~ '-tabs' }}">
         {% for locale in locales %}
-            {% if loop.first %}
-                {% set class = "active" %}
-            {% else %}
-                {% set class = "" %}
-            {% endif %}
-
-            <div class="content {{ class }}" id="{{ sanitized_name }}_{{ locale }}">
+            <div class="content {{ loop.first ? 'active':'' }}" id="{{ sanitized_name }}_{{ locale }}">
                 {{ form_widget(attribute(form, "#{name}_#{locale}")) }}
             </div>
         {% endfor %}
     </div>
+    <script type="application/javascript">
+        $(function() {
+            var $tabs = $("#{{ id ~ '-tabs' }}");
+            var $tabButtonsContainer = $tabs.prev();
+            var $tabButtons = $tabButtonsContainer.find('.tabs-button');
+            var buttonsCount = $tabButtons.length
+
+
+            $tabs.on('keydown', function(event) {
+                if (event.which == 9) {
+                    var activeTab = _.find($tabButtons, function (button) {
+                        return $(button).hasClass('active')
+                    })
+
+                    var currentIndex = $(activeTab).index();
+
+                    if (currentIndex != buttonsCount - 1) {
+                        $($tabButtons[currentIndex + 1]).find('a').click()
+                        $tabs.find(':input:visible').select();
+                        return false
+                    }
+                }
+            });
+        })
+    </script>
 {% endblock %}
