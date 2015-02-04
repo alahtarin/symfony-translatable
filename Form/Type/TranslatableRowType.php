@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Alahtarin\TranslatableBundle\Form\EventListener\TranslatableRowSubscriber;
 
 /**
 * Class TranslatableRowType
@@ -20,6 +21,11 @@ class TranslatableRowType extends AbstractType
      * @var array
      */
     protected $defaultLocales;
+
+    /**
+     * Label class
+     */
+    const LABEL_CLASS = 'translatable-label';
 
     /**
      * @param array $locales
@@ -39,27 +45,37 @@ class TranslatableRowType extends AbstractType
         }
 
         foreach ($options['locales'] as $locale) {
-            $builder->add($builder->getName().'_'.$locale, $options['field_type'], [
+            $builder->add($locale, $options['field_type'], [
                 'mapped' => false,
                 'label' => false
             ]);
+        }
+
+        //event listeners
+        if ($options['required']) {
+            $builder->addEventSubscriber(new TranslatableRowSubscriber($options));
         }
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @param FormView $view
-     * @param FormInterface $form
-     * @param array $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
+        if (isset($options['label_attr'])) {
+            $options['label_attr']['class'] = isset($options['label_attr']['class'])
+                ? $options['label_attr']['class'] . static::LABEL_CLASS
+                : static::LABEL_CLASS;
+        } else {
+            $options['label_attr'] = ['class' => static::LABEL_CLASS];
+        }
+
         $view->vars = array_merge($view->vars, [
             'locales' => $options['locales'],
             'switch_class' => $options['switch_class'],
             'use_delete' => $options['use_delete'],
-            'field_type' => $options['field_type']
+            'field_type' => $options['field_type'],
+            'label_attr' => $options['label_attr']
         ]);
     }
 
@@ -73,8 +89,9 @@ class TranslatableRowType extends AbstractType
             'locales' => $this->defaultLocales,
             'use_delete' => false,
             'switch_class' => '',
-            'field_type' => 'text'
-
+            'field_type' => 'text',
+            'required' => false,
+            'error_bubbling' => false,
         ));
     }
 
@@ -85,4 +102,5 @@ class TranslatableRowType extends AbstractType
     {
         return 'translatable';
     }
+
 }

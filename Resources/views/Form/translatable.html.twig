@@ -1,14 +1,3 @@
-{% block translatable_row %}
-    <div class="row">
-        <div class="columns">
-            {% set label_class = label_attr.class|default('') %}
-            {% set label_class = label_class ~ ' translatable-label' %}
-            {{ form_label(form, null, {label_attr: {class: label_class}}) }}
-            {{ form_widget(form) }}
-        </div>
-    </div>
-{% endblock %}
-
 {% block translatable_widget %}
     {% set sanitized_name = full_name|replace({'[' : '_', ']' : '_'}) %}
     <dl class="tabs language-tabs-switch translatable-vertical {{ switch_class }}" data-tab>
@@ -22,7 +11,7 @@
     <div class="tabs-content language-tabs-content" id="{{ id ~ '-tabs' }}">
         {% for locale in locales %}
             <div class="content {{ loop.first ? 'active':'' }}" id="{{ sanitized_name }}_{{ locale }}">
-                {{ form_widget(attribute(form, "#{name}_#{locale}")) }}
+                {{ form_widget(attribute(form, locale)) }}
             </div>
         {% endfor %}
     </div>
