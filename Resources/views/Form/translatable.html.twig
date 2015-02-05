@@ -23,7 +23,7 @@
             var buttonsCount = $tabButtons.length;
 
             $tabs.on('keyup', function(event) {
-                var $activeTab = $("#{{ id ~ '-switcher' }} a[href='#" + event.target.id + "']");
+                var $activeTab = $("#{{ id ~ '-switcher' }} a[href='#" + $(event.target).parent().attr('id') + "']");
 
                 $activeTab.removeClass('off');
                 if (event.target.value.length == 0) {
@@ -32,7 +32,7 @@
             });
 
             $tabs.on('keydown', function(event) {
-                var $activeTab = $("#{{ id ~ '-switcher' }} a[href='#" + event.target.id + "']");
+                var $activeTab = $("#{{ id ~ '-switcher' }} a[href='#" + $(event.target).parent().attr('id') + "']");
 
                 if (event.which == 9) {
                     var currentIndex = $activeTab.closest("dd").index();
