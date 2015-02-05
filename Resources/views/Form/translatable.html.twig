@@ -20,21 +20,28 @@
             var $tabs = $("#{{ id ~ '-tabs' }}");
             var $tabButtonsContainer = $tabs.prev();
             var $tabButtons = $tabButtonsContainer.find('.tabs-button');
-            var buttonsCount = $tabButtons.length
+            var buttonsCount = $tabButtons.length;
 
 
             $tabs.on('keydown', function(event) {
                 if (event.which == 9) {
                     var activeTab = _.find($tabButtons, function (button) {
-                        return $(button).hasClass('active')
+                        return $(button).hasClass('active');
                     })
 
                     var currentIndex = $(activeTab).index();
-
-                    if (currentIndex != buttonsCount - 1) {
-                        $($tabButtons[currentIndex + 1]).find('a').click()
-                        $tabs.find(':input:visible').select();
-                        return false
+                    if(event.shiftKey) {
+                        if (currentIndex != 0) {
+                            $($tabButtons[currentIndex - 1]).find('a').click();
+                            $tabs.find(':input:visible').select();
+                            return false
+                        }
+                    }else {
+                        if (currentIndex != buttonsCount - 1) {
+                            $($tabButtons[currentIndex + 1]).find('a').click();
+                            $tabs.find(':input:visible').select();
+                            return false
+                        }
                     }
                 }
             });
