@@ -1,8 +1,8 @@
 {% block translatable_widget %}
     {% set sanitized_name = full_name|replace({'[' : '_', ']' : '_'}) %}
-    <dl class="tabs language-tabs-switch translatable-vertical {{ switch_class }}" data-tab>
+    <dl class="tabs language-tabs-switch translatable-vertical {{ switch_class }}" id="{{ id ~ '-switcher' }}" data-tab>
         {% for locale in locales %}
-            <dd class = "tabs-button {{ loop.first ? 'active':'' }}"><a href="#{{ sanitized_name }}_{{ locale }}">{{ locale }}</a></dd>
+            <dd class = "tabs-button {{ loop.first ? 'active':'' }}"><a href="#{{ sanitized_name }}{{ locale }}">{{ locale }}</a></dd>
         {% endfor %}
         {% if use_delete %}
             <dd class="right translatable-delete"><div href="#"><i class="fa fa-trash-o"></i></div></dd>
@@ -10,7 +10,7 @@
     </dl>
     <div class="tabs-content language-tabs-content" id="{{ id ~ '-tabs' }}">
         {% for locale in locales %}
-            <div class="content {{ loop.first ? 'active':'' }}" id="{{ sanitized_name }}_{{ locale }}">
+            <div class="content {{ loop.first ? 'active':'' }}" id="{{ sanitized_name }}{{ locale }}">
                 {{ form_widget(attribute(form, locale)) }}
             </div>
         {% endfor %}
@@ -22,21 +22,27 @@
             var $tabButtons = $tabButtonsContainer.find('.tabs-button');
             var buttonsCount = $tabButtons.length;
 
+            $tabs.on('keyup', function(event) {
+                var $activeTab = $("#{{ id ~ '-switcher' }} a[href='#" + event.target.id + "']");
+
+                $activeTab.removeClass('off');
+                if (event.target.value.length == 0) {
+                    $activeTab.addClass('off');
+                }
+            });
 
             $tabs.on('keydown', function(event) {
-                if (event.which == 9) {
-                    var activeTab = _.find($tabButtons, function (button) {
-                        return $(button).hasClass('active');
-                    })
+                var $activeTab = $("#{{ id ~ '-switcher' }} a[href='#" + event.target.id + "']");
 
-                    var currentIndex = $(activeTab).index();
+                if (event.which == 9) {
+                    var currentIndex = $activeTab.closest("dd").index();
                     if(event.shiftKey) {
                         if (currentIndex != 0) {
                             $($tabButtons[currentIndex - 1]).find('a').click();
                             $tabs.find(':input:visible').select();
                             return false
                         }
-                    }else {
+                    } else {
                         if (currentIndex != buttonsCount - 1) {
                             $($tabButtons[currentIndex + 1]).find('a').click();
                             $tabs.find(':input:visible').select();
@@ -45,6 +51,10 @@
                     }
                 }
             });
+
+            $.each($tabs.find("input"), function() {
+                $(this).trigger('keyup');
+            })
         })
     </script>
 {% endblock %}
