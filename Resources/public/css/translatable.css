@@ -27,6 +27,7 @@
     font-size: 0.8rem !important;
     padding: 1px 8px !important;
     color: #000 !important;
+    outline: 0;
 }
 
 .language-tabs-switch a.off {
