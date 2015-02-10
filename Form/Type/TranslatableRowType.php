@@ -90,7 +90,7 @@ class TranslatableRowType extends AbstractType
             'use_delete' => false,
             'switch_class' => '',
             'field_type' => 'text',
-            'required' => false,
+            'required' => true,
             'error_bubbling' => false,
         ));
     }

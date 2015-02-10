@@ -14,15 +14,28 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
+/**
+ * Class TranslatableRowSubscriber
+ *
+ * @package Alahtarin\TranslatableBundle\Form\EventListener
+ */
 class TranslatableRowSubscriber implements EventSubscriberInterface
 {
     private $options;
 
-    public function __construct($options)
+    /**
+     * Constructor.
+     *
+     * @param array $options
+     */
+    public function __construct(array $options)
     {
         $this->options = $options;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function onPostSubmit(FormEvent $event)
     {
         $form = $event->getForm();
