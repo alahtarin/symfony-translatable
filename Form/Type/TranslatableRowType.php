@@ -84,15 +84,16 @@ class TranslatableRowType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'mapped' => false,
-            'locales' => $this->defaultLocales,
-            'use_delete' => false,
-            'switch_class' => '',
-            'field_type' => 'text',
-            'required' => true,
-            'error_bubbling' => false,
-        ));
+        $resolver->setDefaults([
+            'mapped'            => false,
+            'locales'           => $this->defaultLocales,
+            'use_delete'        => false,
+            'switch_class'      => '',
+            'field_type'        => 'text',
+            'validation_method' => 'all',
+            'required'          => true,
+            'error_bubbling'    => false,
+        ]);
     }
 
     /**

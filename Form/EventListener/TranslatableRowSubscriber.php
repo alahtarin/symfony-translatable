@@ -40,16 +40,21 @@ class TranslatableRowSubscriber implements EventSubscriberInterface
     {
         $form = $event->getForm();
 
-        $valid = false;
+        $method = $this->options['validation_method'];
+        $valid = $method === 'one' ? false : true;
+
         foreach ($this->options['locales'] as $locale) {
-            if ($form->get($locale)->getData()) {
+            if ($form->get($locale)->getData() && $method === 'one') {
                 $valid = true;
+                break;
+            } elseif (! $form->get($locale)->getData() && $method === 'all') {
+                $valid = false;
                 break;
             }
         }
 
         if (! $valid) {
-            $form->addError(new FormError('translatable validation error'));
+            $form->addError(new FormError('translatable validation error ' . $method));
         }
     }
 
