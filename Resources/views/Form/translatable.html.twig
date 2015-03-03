@@ -4,6 +4,7 @@
         {% for locale in locales %}
             <dd class = "tabs-button {{ loop.first ? 'active':'' }}"><a href="#{{ sanitized_name ~ locale ~ "tab" }}">{{ locale }}</a></dd>
         {% endfor %}
+        <dd class="translatable-copy"><div class="translatable-link" href="#"><i class="fa fa-copy"></i></div></dd>
         {% if use_delete %}
             <dd class="right translatable-delete"><div href="#"><i class="fa fa-trash-o"></i></div></dd>
         {% endif %}
@@ -16,6 +17,7 @@
         {% endfor %}
     </div>
     <script type="application/javascript">
+
         $(function() {
             var $tabs = $("#{{ id ~ '-tabs' }}");
             var $tabButtonsContainer = $tabs.prev();
@@ -30,6 +32,19 @@
                     $activeTab.addClass('off');
                 }
             });
+
+            if("{{ form.vars.field_type }}" == "ckeditor") {
+                _.each(CKEDITOR.instances, function(instance){
+                    instance.on('change', function(){
+                        var $activeTab = $("#{{ id ~ '-switcher' }} a[href='#" + this.name + "tab']");
+
+                        $activeTab.removeClass('off');
+                        if (instance.getData().length == 0) {
+                            $activeTab.addClass('off');
+                        }
+                    });
+                });
+            }
 
             $tabs.on('keydown', function(event) {
                 var $activeTab = $("#{{ id ~ '-switcher' }} a[href='#" + $(event.target).parent().attr('id') + "']");
@@ -51,6 +66,30 @@
                     }
                 }
             });
+
+            $tabs.parent().find('.translatable-link').click(function(){
+                //update tab content
+                if(!("{{ form.vars.field_type }}" == "ckeditor")) {
+                    var content = $(this).closest('.columns').find('.language-tabs-content :input:visible').val();
+                    $(this).closest('.columns').find('.language-tabs-content :input:hidden').each(function (i, item) {
+                        $(item).val(content);
+                    });
+                }else{
+                    //handle ckeditor
+                    var content = CKEDITOR.instances[$(this).closest('.columns').find('.language-tabs-content .content:visible textarea').attr('id')].getData();
+                    $(this).closest('.columns').find('.language-tabs-content .content:hidden textarea').each(function (i, item) {
+                        CKEDITOR.instances[$(item).attr('id')].setData(content);
+                    });
+                }
+
+                //update translatable switch statuses
+                $(this).closest('dl').find('a').each(function(i,item){
+                    $(item).removeClass('off');
+                    $(item).animate({backgroundColor: '#008cba', color: '#fff'}, 500, function() {
+                        $(this).animate({backgroundColor: '##EFEFEF', color: '#222'}, 500);
+                    });
+                });
+            })
 
             $.each($tabs.find(":input"), function() {
                 $(this).trigger('keyup');
