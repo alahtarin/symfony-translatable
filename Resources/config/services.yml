@@ -1,6 +1,6 @@
 services:
     z_admin.form.type.translatable:
         class: Alahtarin\TranslatableBundle\Form\Type\TranslatableRowType
-        arguments: [%alahtarin_translatable.default_locales%]
+        arguments: [@translator, %alahtarin_translatable.default_locales%]
         tags:
             - {name: form.type, alias: translatable}

@@ -13,6 +13,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class TranslatableRowSubscriber
@@ -21,16 +22,26 @@ use Symfony\Component\Form\FormEvents;
  */
 class TranslatableRowSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var array
+     */
     private $options;
+
+    /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
 
     /**
      * Constructor.
      *
-     * @param array $options
+     * @param TranslatorInterface $translator
+     * @param array               $options
      */
-    public function __construct(array $options)
+    public function __construct(TranslatorInterface $translator, array $options)
     {
-        $this->options = $options;
+        $this->options      = $options;
+        $this->translator   = $translator;
     }
 
     /**
@@ -40,6 +51,7 @@ class TranslatableRowSubscriber implements EventSubscriberInterface
     {
         $form = $event->getForm();
 
+        dump($event);
         $method = $this->options['validation_method'];
         $valid = $method === 'one' ? false : true;
 
@@ -50,6 +62,37 @@ class TranslatableRowSubscriber implements EventSubscriberInterface
             } elseif (! $form->get($locale)->getData() && $method === 'all') {
                 $valid = false;
                 break;
+            }
+        }
+
+        if ($valid && $this->options['requirements']) {
+            $req = $this->options['requirements'];
+
+            $errors = [];
+            foreach ($this->options['locales'] as $locale) {
+                if ($data = $form->get($locale)->getData()) {
+                    if (isset($req['min']) && !isset($errors['min']) && strlen($data) < $req['min']) {
+                        $message = $this->translator->transChoice(
+                            'translatable validation error min %count%',
+                            $req['min'],
+                            ['%count%' => $req['min']]
+                        );
+
+                        $form->addError(new FormError($message));
+                        $errors['min'] = true;
+                    }
+
+                    if (isset($req['max']) && !isset($errors['max']) && strlen($data) > $req['max']) {
+                        $message = $this->translator->transChoice(
+                            'translatable validation error min %count%',
+                            $req['max'],
+                            ['%count%' => $req['max']]
+                        );
+
+                        $form->addError(new FormError($message));
+                        $errors['max'] = true;
+                    }
+                }
             }
         }
 

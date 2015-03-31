@@ -62,6 +62,10 @@
     padding: 0 !important;
 }
 
+.translatable-copy .translatable-link {
+    color: #777;
+}
+
 .translatable-copy .translatable-link:hover {
     color: #ffffff !important;
     background: #008cba;

@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Alahtarin\TranslatableBundle\Form\EventListener\TranslatableRowSubscriber;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
 * Class TranslatableRowType
@@ -28,11 +29,18 @@ class TranslatableRowType extends AbstractType
     const LABEL_CLASS = 'translatable-label';
 
     /**
-     * @param array $locales
+     * @var TranslatorInterface
      */
-    public function __construct($locales = [])
+    protected $translator;
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param array               $locales
+     */
+    public function __construct(TranslatorInterface $translator, $locales = [])
     {
-        $this->defaultLocales = $locales;
+        $this->defaultLocales   = $locales;
+        $this->translator       = $translator;
     }
 
     /**
@@ -53,7 +61,7 @@ class TranslatableRowType extends AbstractType
 
         //event listeners
         if ($options['required']) {
-            $builder->addEventSubscriber(new TranslatableRowSubscriber($options));
+            $builder->addEventSubscriber(new TranslatableRowSubscriber($this->translator, $options));
         }
     }
 
@@ -92,6 +100,7 @@ class TranslatableRowType extends AbstractType
             'field_type'        => 'text',
             'validation_method' => 'all',
             'required'          => true,
+            'requirements'      => [],
             'error_bubbling'    => false,
         ]);
     }
