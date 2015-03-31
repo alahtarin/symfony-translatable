@@ -71,7 +71,7 @@
                 //update tab content
                 if(!("{{ form.vars.field_type }}" == "ckeditor")) {
                     var content = $(this).closest('.columns').find('.language-tabs-content :input:visible').val();
-                    $(this).closest('.columns').find('.language-tabs-content :input:hidden').each(function (i, item) {
+                    $(this).closest('.columns').find('.language-tabs-content :input:visible').focus().each(function (i, item) {
                         $(item).val(content);
                     });
                 }else{
