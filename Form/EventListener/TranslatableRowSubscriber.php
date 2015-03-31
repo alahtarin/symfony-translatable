@@ -51,7 +51,6 @@ class TranslatableRowSubscriber implements EventSubscriberInterface
     {
         $form = $event->getForm();
 
-        dump($event);
         $method = $this->options['validation_method'];
         $valid = $method === 'one' ? false : true;
 
@@ -71,7 +70,7 @@ class TranslatableRowSubscriber implements EventSubscriberInterface
             $errors = [];
             foreach ($this->options['locales'] as $locale) {
                 if ($data = $form->get($locale)->getData()) {
-                    if (isset($req['min']) && !isset($errors['min']) && strlen($data) < $req['min']) {
+                    if (isset($req['min']) && !isset($errors['min']) && mb_strlen(strip_tags($data), 'UTF8') < $req['min']) {
                         $message = $this->translator->transChoice(
                             'translatable validation error min %count%',
                             $req['min'],
@@ -82,9 +81,9 @@ class TranslatableRowSubscriber implements EventSubscriberInterface
                         $errors['min'] = true;
                     }
 
-                    if (isset($req['max']) && !isset($errors['max']) && strlen($data) > $req['max']) {
+                    if (isset($req['max']) && !isset($errors['max']) && mb_strlen(strip_tags($data), 'UTF8') > $req['max']) {
                         $message = $this->translator->transChoice(
-                            'translatable validation error min %count%',
+                            'translatable validation error max %count%',
                             $req['max'],
                             ['%count%' => $req['max']]
                         );
