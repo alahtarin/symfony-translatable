@@ -34,6 +34,7 @@
             });
 
             if("{{ form.vars.field_type }}" == "ckeditor") {
+                CKEDITOR.config.forcePasteAsPlainText = true;
                 _.each(CKEDITOR.instances, function(instance){
                     instance.on('change', function(){
                         var $activeTab = $("#{{ id ~ '-switcher' }} a[href='#" + this.name + "tab']");
