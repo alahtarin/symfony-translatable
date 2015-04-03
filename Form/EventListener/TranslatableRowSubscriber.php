@@ -69,10 +69,17 @@ class TranslatableRowSubscriber implements EventSubscriberInterface
             $valid = true;
         }
 
+        if (!$valid && $method === 'one') {
+            foreach ($this->options['locales'] as $locale) {
+                if (!$form->get($locale)->getData() && $method === 'one') {
+                    $form->addError(new FormError('translatable validation error ' . $method, null, ['locale' => $locale]));
+                }
+            }
+        }
+
         if ($valid && $this->options['requirements']) {
             $req = $this->options['requirements'];
 
-            $errors = [];
             foreach ($this->options['locales'] as $locale) {
                 if ($data = $form->get($locale)->getData()) {
                     if (isset($req['min']) && !isset($errors['min']) && mb_strlen(strip_tags($data), 'UTF8') < $req['min']) {
@@ -83,7 +90,6 @@ class TranslatableRowSubscriber implements EventSubscriberInterface
                         );
 
                         $form->addError(new FormError($message));
-                        $errors['min'] = true;
                     }
 
                     if (isset($req['max']) && !isset($errors['max']) && mb_strlen(strip_tags($data), 'UTF8') > $req['max']) {
@@ -94,7 +100,6 @@ class TranslatableRowSubscriber implements EventSubscriberInterface
                         );
 
                         $form->addError(new FormError($message));
-                        $errors['max'] = true;
                     }
                 }
             }

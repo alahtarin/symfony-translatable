@@ -2,7 +2,7 @@
     {% set sanitized_name = full_name|replace({'[' : '_', ']' : '_'}) %}
     <dl class="tabs language-tabs-switch translatable-vertical {{ switch_class }}" id="{{ id ~ '-switcher' }}" data-tab>
         {% for locale in locales %}
-            <dd class = "tabs-button {{ loop.first ? 'active':'' }}"><a href="#{{ sanitized_name ~ locale ~ "tab" }}">{{ locale }}</a></dd>
+            <dd class = "tabs-button {{ loop.first ? 'active':'' }} button_{{ locale }}"><a href="#{{ sanitized_name ~ locale ~ "tab" }}">{{ locale }}</a></dd>
         {% endfor %}
         <dd class="translatable-copy"><div class="translatable-link" href="#"><i class="fa fa-copy"></i></div></dd>
         {% if use_delete %}
@@ -11,8 +11,9 @@
     </dl>
     <div class="tabs-content language-tabs-content" id="{{ id ~ '-tabs' }}">
         {% for locale in locales %}
-            <div id="{{ sanitized_name ~ locale ~ "tab" }}" class="content {{ loop.first ? 'active':'' }}" >
+            <div id="{{ sanitized_name ~ locale ~ "tab" }}" class="content {{ loop.first ? 'active':'' }} content_{{ locale }}" >
                 {{ form_widget(attribute(form, locale)) }}
+                {{ form_errors(form) }}
             </div>
         {% endfor %}
     </div>

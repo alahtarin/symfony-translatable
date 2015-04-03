@@ -43,6 +43,14 @@
     background: #43ac6a !important;
 }
 
+.language-tabs-switch dd.error a {
+    color: #f04124 !important;
+}
+
+.language-tabs-switch dd.error a:hover {
+    color: #f04124 !important;
+}
+
 .language-tabs-switch dd:not(.active):not(.translatable-delete) a:hover {
     background: #008cba !important;
     color: #fff !important;
