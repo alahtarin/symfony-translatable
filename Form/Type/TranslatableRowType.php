@@ -59,10 +59,7 @@ class TranslatableRowType extends AbstractType
             ]);
         }
 
-        //event listeners
-        if ($options['required']) {
-            $builder->addEventSubscriber(new TranslatableRowSubscriber($this->translator, $options));
-        }
+        $builder->addEventSubscriber(new TranslatableRowSubscriber($this->translator, $options));
     }
 
     /**
