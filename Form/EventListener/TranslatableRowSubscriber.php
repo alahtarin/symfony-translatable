@@ -60,9 +60,8 @@ class TranslatableRowSubscriber implements EventSubscriberInterface
                 if ($form->get($locale)->getData() && $method === 'one') {
                     $valid = true;
                     break;
-                } elseif (!$form->get($locale)->getData() && $method === 'all') {
-                    $valid = false;
-                    break;
+                } elseif (! $form->get($locale)->getData() && $method === 'all') {
+                    $form->addError(new FormError('translatable validation error ' . $method, null, ['locale' => $locale]));
                 }
             }
         } else {
@@ -89,7 +88,7 @@ class TranslatableRowSubscriber implements EventSubscriberInterface
                             ['%count%' => $req['min']]
                         );
 
-                        $form->addError(new FormError($message));
+                        $form->addError(new FormError($message, null, ['locale' => $locale]));
                     }
 
                     if (isset($req['max']) && !isset($errors['max']) && mb_strlen(strip_tags($data), 'UTF8') > $req['max']) {
@@ -99,14 +98,10 @@ class TranslatableRowSubscriber implements EventSubscriberInterface
                             ['%count%' => $req['max']]
                         );
 
-                        $form->addError(new FormError($message));
+                        $form->addError(new FormError($message, null, ['locale' => $locale]));
                     }
                 }
             }
-        }
-
-        if (! $valid) {
-            $form->addError(new FormError('translatable validation error ' . $method));
         }
     }
 
